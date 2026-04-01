@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        input {
+            display: block;
+            margin-bottom: 5px;
+            padding: 8px;
+            width: 250px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        button:disabled {
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Formularz rejestracji</h2>
+
+<form>
+    <label>Imię:</label>
+    <input type="text" id="name">
+    <div class="error" id="nameError"></div>
+
+    <label>Email:</label>
+    <input type="text" id="email">
+    <div class="error" id="emailError"></div>
+
+    <label>Hasło:</label>
+    <input type="password" id="password">
+    <div class="error" id="passwordError"></div>
+
+    <label>Potwierdź hasło:</label>
+    <input type="password" id="confirmPassword">
+    <div class="error" id="confirmError"></div>
+
+    <button id="submitBtn" disabled>Zarejestruj</button>
+</form>
+
+<script>
+$(document).ready(function(){
+
+    function validateForm() {
+        let isValid = true;
+
+        let name = $("#name").val();
+        if (name === "") {
+            $("#nameError").text("Imię jest wymagane");
+            isValid = false;
+        } else {
+            $("#nameError").text("");
+        }
+
+        let email = $("#email").val();
+        let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (email === "") {
+            $("#emailError").text("Email jest wymagany");
+            isValid = false;
+        } else if (!email.match(emailPattern)) {
+            $("#emailError").text("Nieprawidłowy email");
+            isValid = false;
+        } else {
+            $("#emailError").text("");
+        }
+
+        let password = $("#password").val();
+        if (password === "") {
+            $("#passwordError").text("Hasło jest wymagane");
+            isValid = false;
+        } else if (password.length < 6) {
+            $("#passwordError").text("Hasło musi mieć min. 6 znaków");
+            isValid = false;
+        } else {
+            $("#passwordError").text("");
+        }
+        let confirm = $("#confirmPassword").val();
+        if (confirm === "") {
+            $("#confirmError").text("Potwierdź hasło");
+            isValid = false;
+        } else if (confirm !== password) {
+            $("#confirmError").text("Hasła się nie zgadzają");
+            isValid = false;
+        } else {
+            $("#confirmError").text("");
+        }
+        $("#submitBtn").prop("disabled", !isValid);
+    }
+
+    $("input").on("keyup", function(){
+        validateForm();
+    });
+
+});
+</script>
+
+</body>
+</html>
